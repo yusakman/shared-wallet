@@ -1,0 +1,52 @@
+<div class="container">
+  <mat-card class="card">
+    <mat-card-title class="card-title">Shared Wallet</mat-card-title>
+    <mat-card class="card-balance">
+      <mat-card-header>
+        <mat-card-title class="card-section-title">Balance</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          You have <span id="balance">{{ model.balance }}</span> Ether
+        </p>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="card-deposit">
+      <mat-card-header>
+        <mat-card-title class="card-section-title">Deposit</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field id="address-selector" class="address-field">
+          <mat-select
+            name="account"
+            (selectionChange)="refreshBalance()"
+            [(value)]="model.account"
+            placeholder="Address"
+          >
+            <mat-option *ngFor="let account of accounts" [value]="account">{{
+              account
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="amount-field">
+          <input
+            type="text"
+            matInput
+            id="amount"
+            placeholder="Amount in Ether"
+            (change)="setDepositAmount($event)"
+          />
+        </mat-form-field>
+        <button
+          mat-raised-button
+          color="accent"
+          mat-button
+          id="send"
+          (click)="depositEther()"
+        >
+          Deposit Ether
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </mat-card>
+</div>
