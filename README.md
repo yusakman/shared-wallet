@@ -1,8 +1,6 @@
-# Truffle Box for Angular
+# Shared Wallet
 
-This Truffle Box provides a base for working with the Truffle Framework and Angular.
-It provides a basic working example of the MetaCoin contracts with Angular components.
-This project is generated with [Angular CLI](https://cli.angular.io/).
+Built using Truffle Box, Angular, and Angular Material.
 
 ## Prerequisites
 
@@ -82,34 +80,3 @@ truffle test
 ```bash
 ng e2e
 ```
-
-## Releasing
-
-Using the Angular CLI you can build a distributable of your app. Will be placed in `dist/`
-
-```bash
-ng build
-```
-
-## FAQ
-
-- **Where can I find more documentation?**
-
-This Truffle box is a union of [Truffle](http://truffleframework.com/) and an Angular setup created with [Angular CLI](https://cli.angular.io/).
-For solidity compilation and Ethereum related issues, try the [Truffle documentation](http://truffleframework.com/docs/).
-For Angular CLI and typescript issues, refer to the [Angular CLI documentation](https://github.com/angular/angular-cli/wiki)
-
-- **Common errors and their solutions**
-
-| Error                                                                                                                                                    | Solution                                                                                           |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `Module not found: Error: Can't resolve '../../../../build/contracts/MetaCoin.json'` during `ng serve`                                                   | Run `truffle compile`                                                                              |
-| `Error: the tx doesn't have the correct nonce.` in MetaMask                                                                                              | Reset MetaMask: Settings -> Reset Account                                                          |
-| `Error getting balance; see log.` in UI, with `Error: MetaCoin has not been deployed to detected network (network/artifact mismatch)` in browser console | Ensure you have started ganache, run `truffle migrate` and configured MetaMask to point to ganache |
-
-- **How do I get this to work on Windows?**
-
-Possible issues:
-
-- If you're missing a C++ compiler, run `npm install --global --production windows-build-tools` in a cmd with administrative rights.
-- If the `truffle.js` file opens when you're trying to run truffle commands, rename the file to `truffle-config.js`
