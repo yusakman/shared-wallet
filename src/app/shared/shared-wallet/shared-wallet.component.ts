@@ -17,7 +17,10 @@ export class SharedWalletComponent implements OnInit {
   model = {
     account: "",
     depositAmount: 0,
-    balance: 0
+    balance: 0,
+    whitelistAddress: "",
+    sendAmount: 0,
+    receiver: ""
   };
 
   status = "";
@@ -26,19 +29,18 @@ export class SharedWalletComponent implements OnInit {
     private web3Service: Web3Service,
     private matSnackBar: MatSnackBar
   ) {
-    console.log("Constructor: " + web3Service);
+    // console.log("Constructor: " + web3Service);
   }
 
   ngOnInit(): void {
-    console.log("OnInit: " + this.web3Service);
-    console.log(this);
+    // console.log("OnInit: " + this.web3Service);
     this.watchAccount();
     this.web3Service
       .artifactsToContract(sharedwallet_artifacts)
       .then(SharedWalletAbstraction => {
         this.SharedWallet = SharedWalletAbstraction;
         this.SharedWallet.deployed().then(deployed => {
-          console.log(deployed);
+          // console.log(deployed);
         });
       });
   }
@@ -56,30 +58,38 @@ export class SharedWalletComponent implements OnInit {
   }
 
   async refreshBalance() {
-    console.log("Refreshing balance");
-
     try {
       const deployedSharedWallet = await this.SharedWallet.deployed();
-      console.log(deployedSharedWallet);
-      console.log("Account", this.model.account);
       const sharedWalletBalance = await this.web3Service
         .getWeb3()
         .then(web3 => {
           return web3.eth.getBalance(deployedSharedWallet.address);
         });
-      console.log("Balance (wei)", sharedWalletBalance);
+
       this.model.balance = this.SharedWallet.web3.utils.fromWei(
         sharedWalletBalance,
         "ether"
       );
     } catch (e) {
       console.log(e);
-      this.setStatus("Erro getting balance; see log");
+      this.setStatus("Error getting balance; see log");
     }
   }
 
   setDepositAmount(e) {
     this.model.depositAmount = e.target.value;
+  }
+
+  setWhitelist(e) {
+    this.model.whitelistAddress = e.target.value;
+  }
+
+  setSendAmount(e) {
+    this.model.sendAmount = e.target.value;
+  }
+
+  setReceiver(e) {
+    this.model.receiver = e.target.value;
   }
 
   async depositEther() {
@@ -89,9 +99,6 @@ export class SharedWalletComponent implements OnInit {
     }
 
     const amount = this.model.depositAmount;
-    const sender = this.model.account;
-
-    console.log("Sending Ether " + amount + "from" + sender);
 
     this.setStatus("Initiating transaction...(plesase wait)");
     try {
@@ -100,6 +107,94 @@ export class SharedWalletComponent implements OnInit {
         from: this.model.account,
         value: this.SharedWallet.web3.utils.toWei(amount, "Ether")
       });
+
+      if (!transaction) {
+        this.setStatus("Transaction failed!");
+      } else {
+        this.setStatus("Transaction complete");
+      }
+    } catch (e) {
+      console.log(e);
+      this.setStatus("Error sending Ether; see log.");
+    }
+  }
+
+  async addWhitelist() {
+    if (!this.SharedWallet) {
+      this.setStatus("Shared Wallet is not loaded, unable to send transaction");
+      return;
+    }
+
+    const whitelistAddress = this.model.whitelistAddress;
+
+    this.setStatus("Initiating transaction...");
+    try {
+      const deployedSharedWallet = await this.SharedWallet.deployed();
+      const transaction = await deployedSharedWallet.authorizedAddress(
+        whitelistAddress,
+        { from: this.model.account }
+      );
+
+      if (!transaction) {
+        this.setStatus("Failed, adding address to whitelist");
+      } else {
+        this.setStatus("Succeed, address added to the whitelist");
+      }
+    } catch (e) {
+      console.log(e);
+      this.setStatus("Error adding wallet; see log.");
+    }
+  }
+
+  async removeWhitelist() {
+    if (!this.SharedWallet) {
+      this.setStatus("Shared Wallet is not loaded, unable to send transaction");
+      return;
+    }
+
+    const whitelistAddress = this.model.whitelistAddress;
+
+    this.setStatus("Initiating transaction...");
+    try {
+      const deployedSharedWallet = await this.SharedWallet.deployed();
+      const transaction = await deployedSharedWallet.unauthorizeAddress(
+        whitelistAddress,
+        { from: this.model.account }
+      );
+
+      if (!transaction) {
+        this.setStatus("Failed, removing address to whitelist");
+      } else {
+        this.setStatus("Succeed, address is removed from the whitelist");
+      }
+    } catch (e) {
+      console.log(e);
+      this.setStatus("Error removing wallet; see log.");
+    }
+  }
+
+  async sendEther() {
+    if (!this.SharedWallet) {
+      this.setStatus("Shared Wallet is not loaded, unable to send transaction");
+      return;
+    }
+
+    const amount = this.model.sendAmount;
+    const receiver = this.model.receiver;
+
+    this.setStatus("Initiating transaction...(plesase wait)");
+    try {
+      const deployedSharedWallet = await this.SharedWallet.deployed();
+      const web3 = await this.web3Service.getWeb3();
+      console.log("web3", web3);
+      const transaction = await deployedSharedWallet.sendFunds(
+        web3.utils.toWei(amount, "Ether"),
+        receiver,
+        {
+          from: this.model.account,
+          gas: 450000
+        }
+      );
 
       if (!transaction) {
         this.setStatus("Transaction failed!");

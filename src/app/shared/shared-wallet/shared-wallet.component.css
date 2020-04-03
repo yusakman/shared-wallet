@@ -14,24 +14,57 @@
   margin-bottom: 1rem;
 }
 
-.card-balance {
-  background-color: #fff;
+.card-address {
+  margin-bottom: 1rem;
+}
+
+.card-account {
+  margin-bottom: 1rem;
+}
+
+.account-info {
+  font-size: medium;
+}
+
+#address {
+  display: block;
   margin-bottom: 1rem;
 }
 
 .card-deposit {
-  background-color: #fff;
+  margin-bottom: 1rem;
+}
+
+.card-whitelist {
+  margin-bottom: 1rem;
 }
 
 .card-section-title {
   font-size: 1.2rem;
   margin-left: -1.1rem;
+  margin-bottom: 0.1rem;
 }
 
 .address-field {
+  display: block;
   width: 400px;
 }
 
 .amount-field {
+  display: block;
+  width: 150px;
   margin-right: 1rem;
+}
+
+.button-whitelist {
+  text-align: left;
+}
+
+#add-whitelist {
+  width: 120px;
+  margin-right: 1rem;
+}
+
+#remove-whitelist {
+  width: 120px;
 }

@@ -1,14 +1,32 @@
 <div class="container">
   <mat-card class="card">
     <mat-card-title class="card-title">Shared Wallet</mat-card-title>
-    <mat-card class="card-balance">
+
+    <!-- <mat-form-field class="address-field">
+      <!-- <mat-select
+        name="account"
+        (selectionChange)="refreshBalance()"
+        [(value)]="model.account"
+        placeholder="Address"
+      > -->
+    <!-- <mat-option *ngFor="let account of accounts" [value]="account">{{
+          account
+        }}</mat-option>
+      </mat-select> -->
+    <!-- </mat-form-field> -->
+    <mat-card class="card-account">
       <mat-card-header>
-        <mat-card-title class="card-section-title">Balance</mat-card-title>
+        <mat-card-title class="card-section-title">Account</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <p>
-          You have <span id="balance">{{ model.balance }}</span> Ether
-        </p>
+        <div class="account-info">
+          <button id="address" mat-raised-button color="accent">
+            {{ model.account }}
+          </button>
+          <button id="balance" mat-raised-button color="accent">
+            {{ model.balance }} Ether
+          </button>
+        </div>
       </mat-card-content>
     </mat-card>
     <mat-card class="card-deposit">
@@ -16,37 +34,87 @@
         <mat-card-title class="card-section-title">Deposit</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <mat-form-field id="address-selector" class="address-field">
-          <mat-select
-            name="account"
-            (selectionChange)="refreshBalance()"
-            [(value)]="model.account"
-            placeholder="Address"
-          >
-            <mat-option *ngFor="let account of accounts" [value]="account">{{
-              account
-            }}</mat-option>
-          </mat-select>
-        </mat-form-field>
         <mat-form-field class="amount-field">
           <input
             type="text"
             matInput
-            id="amount"
             placeholder="Amount in Ether"
             (change)="setDepositAmount($event)"
           />
         </mat-form-field>
         <button
           mat-raised-button
+          style="width: 120px;"
           color="accent"
           mat-button
-          id="send"
           (click)="depositEther()"
         >
           Deposit Ether
         </button>
       </mat-card-content>
+    </mat-card>
+    <mat-card class="card-whitelist">
+      <mat-card-header>
+        <mat-card-title class="card-section-title"
+          >Whitelist Address</mat-card-title
+        >
+      </mat-card-header>
+      <mat-form-field class="address-field">
+        <input
+          type="text"
+          matInput
+          placeholder="Address"
+          (change)="setWhitelist($event)"
+        />
+      </mat-form-field>
+      <div class="button-whitelist">
+        <button
+          mat-raised-button
+          id="add-whitelist"
+          color="accent"
+          (click)="addWhitelist()"
+        >
+          Add
+        </button>
+        <button
+          mat-raised-button
+          id="remove-whitelist"
+          color="accent"
+          (click)="removeWhitelist()"
+        >
+          Remove
+        </button>
+      </div>
+    </mat-card>
+    <mat-card class="card-send">
+      <mat-card-header>
+        <mat-card-title class="card-section-title">Send</mat-card-title>
+      </mat-card-header>
+      <mat-form-field class="address-field">
+        <input
+          type="text"
+          matInput
+          placeholder="Send To"
+          (change)="setReceiver($event)"
+        />
+      </mat-form-field>
+      <mat-form-field class="amount-field">
+        <input
+          type="text"
+          matInput
+          placeholder="Amount in Ether"
+          (change)="setSendAmount($event)"
+        />
+      </mat-form-field>
+      <button
+        mat-raised-button
+        style="width: 120px;"
+        color="accent"
+        mat-button
+        (click)="sendEther()"
+      >
+        Send Ether
+      </button>
     </mat-card>
   </mat-card>
 </div>
