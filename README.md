@@ -1,3 +1,4 @@
+
 # Shared Wallet
 
 Built using Truffle Box, Angular, and Angular Material.
@@ -10,7 +11,7 @@ to install dependencies. In order install these dependencies, you will also need
 
 ## Building
 
-1. Install truffle, Angular CLI and an Ethereum client. If you don't have a test environment, we recommend ganache-cli
+1. Install truffle, Angular CLI and an Ethereum client. If you don't have a test environment, I recommend [Ganache](https://www.trufflesuite.com/ganache) (You can use CLI or desktop version).
 
 ```bash
 npm install -g truffle
@@ -18,19 +19,17 @@ npm install -g @angular/cli
 npm install -g ganache-cli
 ```
 
-2. Download the box.
+2. Run your Ethereum client.
 
-```bash
-truffle unbox Quintor/angular-truffle-box
-```
+Open Ganache. 
 
-3. Run your Ethereum client. For Ganache CLI:
+Or if you prefer the CLI.
 
 ```bash
 ganache-cli
 ```
 
-Note the mnemonic 12-word phrase printed on startup, you will need it later.
+For the cli, the mnemonic 12-word phrase printed on startup, you will need it later.
 
 4. Compile and migrate your contracts.
 
@@ -39,6 +38,10 @@ truffle compile && truffle migrate
 ```
 
 ## Configuration
+
+### Ganache CLI
+
+If you are using Ganache CLI, you need this configuration:
 
 1. In order to connect with the Ethereum network, you will need to configure MetaMask
 2. Log into the `ganache-cli` test accounts in MetaMask, using the 12-word phrase printed earlier.
@@ -59,7 +62,7 @@ The app is now served on localhost:4200
 
 2. Making sure you have configured MetaMask, visit http://localhost:4200 in your browser.
 
-3. Send MetaCoins!
+3. Now you can use Shared Wallet.
 
 ## Testing
 
